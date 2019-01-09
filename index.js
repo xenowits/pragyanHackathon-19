@@ -8,4 +8,4 @@ app.get('/amanchutiya', function(req, res) {
  app.get('/katti', (req,res) => {
  	res.send("tatti... aman tu to muh m le")
  })
-app.listen(3000, () => {"Your app is listening on port 3000!!!"})                          x
+app.listen(3000, () => {"Your app is listening on port 3000!!!yay"})

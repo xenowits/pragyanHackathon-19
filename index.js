@@ -80,13 +80,17 @@ passport.use(new LocalStrategy(
       // return done(null, user);
 
       bcrypt.compare(password, user.password, function(err, res) {
+
       		console.log('ye wala bcrypt ka h ' + res)
+
     		if (err)
     		{
     			throw err
     			console.log('err wala h')
     		}
+
     		else{
+    			
     			console.log('else wala block h ' + res)
     			if (res){
     				return done(null,user)
@@ -97,11 +101,13 @@ passport.use(new LocalStrategy(
     				return done(null, false, { message: 'Incorrect password.' });
     				
     			}
+
     		}
 		});
     });
   }
 ));
+
 
 passport.serializeUser(function(user, done) {
   done(null, user.id);
@@ -219,3 +225,9 @@ app.listen(3000, (err) => {
 		console.log("your server running on port 3000 on 127.0.0.1 known as the localhost")}
 })
 
+
+					// mongoose.connection.collections.farmers.drop(function(){
+
+					// 	console.log("dropped collection")
+
+					// })

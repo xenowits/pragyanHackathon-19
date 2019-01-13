@@ -108,23 +108,23 @@ passport.use(new LocalStrategy(
 
       bcrypt.compare(password, user.password, function(err, res) {
 
-      		console.log('ye wala bcrypt ka h ' + res)
+      		// console.log('ye wala bcrypt ka h ' + res)
 
     		if (err)
     		{
     			throw err
-    			console.log('err wala h')
+    			// console.log('err wala h')
     		}
 
     		else{
 
-    			console.log('else wala block h ' + res)
+    			// console.log('else wala block h ' + res)
     			if (res){
     				return done(null,user)
-    				console.log('res wala true h')
+    				// console.log('res wala true h')
     			}
     			else{
-    				console.log('res wala false h')
+    				// console.log('res wala false h')
     				return done(null, false, { message: 'Incorrect password.' });
     				
     			}
@@ -162,13 +162,13 @@ app.post('/signin',
 
  	 	Farmer.findOne({name: req.body.username}).then(function(result){
 
- 	 		res.send(req.body)
+ 	 		res.send('Hey there...'+req.body.username + '!!! U know Abhishek loves u..Thanks for signing in')
 
  	 	})
 
  	 	// res.send(req.body)
 
- 		console.log('ho gya')
+ 		// console.log('ho gya')
 
   });
 
@@ -237,10 +237,8 @@ app.post('/signup', (req,res) => {
 					// })
 
 					// done()
-				
 
-
-					res.send('Toh tera naam h ' + req.body.name + ' to ab se tera naam h tatti ' )
+	res.send('Bhai/Behen,\n' + req.body.name + 'You have signed up for abhishek')
 
 });
 

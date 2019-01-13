@@ -36,7 +36,7 @@ app.use(passport.initialize())
 
 const Farmer = require('./models/farmer')
 
-mongoose.connect('mongodb://localhost/pragyanhackathon1',{ useNewUrlParser: true })
+mongoose.connect('mongodb://abhi1:123456a@ds255784.mlab.com:55784/pragyanhackathon',{ useNewUrlParser: true })
 
 mongoose.connection.once('open',function(){
 
@@ -90,7 +90,7 @@ passport.use(new LocalStrategy(
     		}
 
     		else{
-    			
+
     			console.log('else wala block h ' + res)
     			if (res){
     				return done(null,user)

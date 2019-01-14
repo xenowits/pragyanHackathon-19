@@ -259,25 +259,17 @@ a{color:inherit;text-decoration:none}
 		</div>
 	</div>
 </div>
+<p id="wow" style="background-color: white;">
   
+</p>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
-  <script type="text/javascript">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script type="text/javascript">
     (function(){  var eDisplayMoment = document.getElementById('displaymoment');  eDisplayMoment.innerHTML = moment().format('DD-MM-YYYY');})();
-  </script>
-  
-  <script>
-    
-    var socket = io()
-    socket.emit('notification' , 'kch ka')
-  
+</script>
 
-    function ab(){console.log('param pavan')}
-
-    socket.on('message' , function(a){
-      console.log(a)
-    })
-
-  </script>
 </body>
 
 </html>

@@ -19,26 +19,11 @@ var server = app.listen(port, function(){
 
 var io = require('socket.io')(server);
 
-// io.sockets.on('connection', function(socket){
-// 	console.log('user connected')
-  	
-//   	socket.on('notification', function(msg){
-    
-//     Farmer.findOne({name: 'anup'}).then(function(result){
+io.sockets.on('connection', (socket) => {
 
-//     	socket.broadcast.emit('message', result);
-//     	console.log(result)		
-//     })
-    
-//   });
+console.log('user connected')
 
-//   	socket.on('disconnect' , function(){
-//   		console.log('user is disconnected')
-//   	})
-// });
-
-
-io.sockets.on('join', function(userNickname) {
+socket.on('join', function(userNickname) {
 
         console.log(userNickname +" : has joined the chat "  );
 
@@ -46,7 +31,7 @@ io.sockets.on('join', function(userNickname) {
     })
 
 
-	io.sockets.on('messagedetection', (senderNickname,messageContent) => {
+socket.on('messagedetection', (senderNickname,messageContent) => {
        
        //log the message in console 
 
@@ -60,18 +45,18 @@ io.sockets.on('join', function(userNickname) {
 // send the message to all users including the sender  using io.emit  
        
       io.emit('message', message )
-      
-      console.log(message)
-      
+     
       })
 
-    io.sockets.on('disconnect', function() {
+     socket.on('disconnect', function() {
 
-        console.log(' has left ')
+        // console.log(userNickname +' has left ')
 
         socket.broadcast.emit( "userdisconnect" ,' user has left')
 
     })
+
+})
 
 const session = require('express-session');
 
@@ -210,9 +195,7 @@ app.post('/signin',
 
 app.get('/welcome' , (req,res) => {
 
-	res.send("you are logged in successfully")
-
-
+	res.sendFile(path.join(__dirname +'/frontend/xx.html'));
 })
 app.post('/signup', (req,res) => {
 

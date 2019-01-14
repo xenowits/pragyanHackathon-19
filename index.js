@@ -19,23 +19,59 @@ var server = app.listen(port, function(){
 
 var io = require('socket.io')(server);
 
-io.sockets.on('connection', function(socket){
-	console.log('user connected')
+// io.sockets.on('connection', function(socket){
+// 	console.log('user connected')
   	
-  	socket.on('notification', function(msg){
+//   	socket.on('notification', function(msg){
     
-    Farmer.findOne({name: 'anup'}).then(function(result){
+//     Farmer.findOne({name: 'anup'}).then(function(result){
 
-    	socket.broadcast.emit('message', result);
-    	console.log(result)		
+//     	socket.broadcast.emit('message', result);
+//     	console.log(result)		
+//     })
+    
+//   });
+
+//   	socket.on('disconnect' , function(){
+//   		console.log('user is disconnected')
+//   	})
+// });
+
+
+io.sockets.on('join', function(userNickname) {
+
+        console.log(userNickname +" : has joined the chat "  );
+
+ socket.broadcast.emit('userjoinedthechat',userNickname +" : has   joined the chat ");
     })
-    
-  });
 
-  	socket.on('disconnect' , function(){
-  		console.log('user is disconnected')
-  	})
-});
+
+socket.on('messagedetection', (senderNickname,messageContent) => {
+       
+       //log the message in console 
+
+       console.log(senderNickname+" : " +messageContent)
+       
+      //create a message object 
+      
+      let  message = {"message":messageContent, 
+                      "senderNickname":senderNickname}
+        
+// send the message to all users including the sender  using io.emit  
+       
+      io.emit('message', message )
+      
+      console.log(message)
+      
+      })
+
+     socket.on('disconnect', function() {
+
+        console.log(' has left ')
+
+        socket.broadcast.emit( "userdisconnect" ,' user has left')
+
+    })
 
 const session = require('express-session');
 

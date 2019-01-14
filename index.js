@@ -46,7 +46,7 @@ io.sockets.on('join', function(userNickname) {
     })
 
 
-socket.on('messagedetection', (senderNickname,messageContent) => {
+	io.sockets.on('messagedetection', (senderNickname,messageContent) => {
        
        //log the message in console 
 
@@ -65,7 +65,7 @@ socket.on('messagedetection', (senderNickname,messageContent) => {
       
       })
 
-     socket.on('disconnect', function() {
+    io.sockets.on('disconnect', function() {
 
         console.log(' has left ')
 

@@ -35,8 +35,8 @@ socket.on('messagedetection', (senderNickname,messageContent) => {
        
        //log the message in console 
 
-       console.log(senderNickname+" : " +messageContent)
-       
+    console.log(senderNickname+" : " +messageContent)
+
       //create a message object 
       
       let  message = {"message":messageContent, 
@@ -83,8 +83,8 @@ app.use(passport.initialize())
 
 const Farmer = require('./models/farmer')
 
-mongoose.connect('mongodb://admin:123456a@ds129593.mlab.com:29593/pragyanhackathon',{ useNewUrlParser: true },)
-// mongoose.connect('mongodb://localhost/pragyanhackathon',{ useNewUrlParser: true })
+// mongoose.connect('mongodb://admin:123456a@ds129593.mlab.com:29593/pragyanhackathon',{ useNewUrlParser: true },)
+mongoose.connect('mongodb://localhost/pragyanhackathon1',{ useNewUrlParser: true })
 
 mongoose.connection.once('open',function(){
 
@@ -99,15 +99,6 @@ console.log("Connection is established successfully")
 app.get('/', (req,res) => {
 
 	res.sendFile(path.join(__dirname +'/frontend/signin.html'));
-
-	// console.log("wooww")
-
-	// Farmer.findOne({name: 'abh'}).then(function(result){
-	// 		console.log(result)
-	// 		// result = ''' + result + '''
-	// 		// var obj = JSON.parse(result)
-	// 		// console.log(obj.state)
-	// })
 
 })
 
@@ -182,9 +173,11 @@ app.post('/signin',
  	 	// console.log(req.body.password)
 
  	 	Farmer.findOne({name: req.body.username}).then(function(result){
+ 	 		// Farmer.find({"aadhar": { $gt: 11234565} } ).then(function(result){
 
  	 		res.send('Hey there...'+req.body.username + '!!! U know Abhishek loves u..Thanks for signing in')
 
+ 	 		res.send(result);
  	 	})
 
  	 	// res.send(req.body)
@@ -193,10 +186,41 @@ app.post('/signin',
 
   });
 
+
+
 app.get('/welcome' , (req,res) => {
 
-	res.sendFile(path.join(__dirname +'/frontend/xx.html'));
+	// res.sendFile(path.join(__dirname +'/frontend/xx.html'));
+	// var newfarmer = new Farmer({
+
+	// 	name: "abhishek",
+	// 	aadhar: 12234567,
+	// 	state: [ "tn" , "bihar" , "up"]
+	// })
+
+	// newfarmer.save(function(err){
+	// 	if (err)
+	// 		throw err
+	// 	else
+	// 		console.log("saved successfully")
+	// })
+	Farmer.find({}).then(function(result){
+
+		var x = []
+		for (var i = 0 ; i < result.length ; i++)
+		{
+			console.log(result[i].state)
+			x.push(result[i].name)
+			// console.log()
+		}
+		// res.send(x)		
+	})
+	res.download('./mozilla.pdf')
 })
+
+
+
+
 app.post('/signup', (req,res) => {
 
 	console.log(req.body);

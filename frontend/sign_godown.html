@@ -26,7 +26,7 @@
             width:100%;
             margin:auto;
             max-width:525px;
-            min-height:1050px;
+            min-height:1150px;
             position:relative;
             background:rgba(40,57,101,.9);
             /*background:url(https://raw.githubusercontent.com/khadkamhn/day-01-login-form/master/img/bg.jpg) no-repeat center;*/
@@ -193,8 +193,12 @@
         <div class="login-form">
             <form action="/signin" method="post"><div class="sign-in-htm">
                 <div class="group">
-                    <label for="username" class="label">Name</label>
-                    <input id="username" type="text" class="input" name="username" required>
+                    <label for="role" class="label">Role</label>
+                    <input id="role" type="text" class="input" name="role" value="godown" readonly>
+                </div>
+                <div class="group">
+                    <label for="name" class="label">Name</label>
+                    <input id="username" type="text" class="input" name="name" required>
                 </div>
                 <div class="group">
                     <label for="password" class="label">Password</label>
@@ -220,6 +224,11 @@
                                     <label for="name" class="label">Email</label>
                                     <input id="name" type="text" class="input" name="name">
                                 </div> -->
+                
+                <div class="group">
+                    <label for="role" class="label">Role</label>
+                    <input id="role" type="text" class="input" name="role" value="godown" readonly>
+                </div>
                 <div class="group">
                     <label for="name" class="label">Name</label>
                     <input id="name" type="text" class="input" name="name" required>
@@ -229,7 +238,7 @@
                     <input id="aadhaar" type="number" class="input" name="aadhar" required>
                 </div>
                 <div class="group">
-                    <label for="contact" class="label">ContactNo</label>
+                    <label for="contact" class="label">Contact</label>
                     <input id="contact" type="number" class="input" name="contact" required>
                 </div>
 

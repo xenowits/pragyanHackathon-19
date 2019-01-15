@@ -83,11 +83,24 @@ app.use(flash())
 
 app.use(passport.initialize())
 
+/// models imported here
+
+
 const Farmer = require('./models/farmer')
 
 const State = require('./models/state')
 
 const Crop = require('./models/state')
+
+const Godown = require('./models/godown')
+
+const Customer = require('./models/customer')
+
+const Ration = require('./models/ration')
+
+
+/// connection to database done here
+
 
 mongoose.connect('mongodb://admin:123456a@ds129593.mlab.com:29593/pragyanhackathon',{ useNewUrlParser: true },)
 
@@ -102,6 +115,9 @@ console.log("Connection is established successfully")
 	console.log('Connection error',error)
 
 })
+
+//// connection to database done ok 200
+
 
 app.get('/', (req,res) => {
 
@@ -147,6 +163,7 @@ app.get('/sign_vendor' , (req,res) => {
 
 ///// end of sign in sign up block
 
+//// passport authentication using local strategy starts
 
 passport.use(new LocalStrategy(
 
@@ -203,31 +220,35 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
+/// paasport js block ends here 
 
-app.post('/signin',
 
-  passport.authenticate('local', { 
-  								failureRedirect: '/',
-                                failureFlash: true }),
+app.post('/signin', function(req,res){
+
+  // passport.authenticate('local', { 
+  // 								failureRedirect: '/',
+  //                               failureFlash: true }),
  	
 
- 	 function(req,res){
+ 	//  function(req,res){
 
- 	 	// console.log(req.body)
+ 	//  	// console.log(req.body)
 
- 	 	// console.log(req.body.password)
+ 	//  	// console.log(req.body.password)
 
- 	 	Farmer.findOne({name: req.body.username}).then(function(result){
- 	 		// Farmer.find({"aadhar": { $gt: 11234565} } ).then(function(result){
+ 	//  	Farmer.findOne({name: req.body.username}).then(function(result){
+ 	//  		// Farmer.find({"aadhar": { $gt: 11234565} } ).then(function(result){
 
- 	 		res.send('Hey there...'+req.body.username + '!!! U know Abhishek loves u..Thanks for signing in')
+ 	//  		res.send('Hey there...'+req.body.username + '!!! U know Abhishek loves u..Thanks for signing in')
 
- 	 		res.send(result);
- 	 	})
+ 	//  		res.send(result);
+ 	//  	})
 
- 	 	// res.send(req.body)
+ 	//  	// res.send(req.body)
 
- 		// console.log('ho gya')
+ 	// 	// console.log('ho gya')
+ 	console.log(req.body)
+ 	res.send(req.body)
 
  });
 
@@ -316,74 +337,139 @@ app.get('/welcome' , (req,res) => {
 })
 })
 
+
+/// download section
+
+
 app.get('/downloads/download' , (req,res) => {
 
 	res.download('./mozilla.pdf')
 
 })
 
+//// signup 
 
 app.post('/signup', (req,res) => {
 
-	console.log(req.body);
+	// console.log(req.body);
 
-	bcrypt.genSalt(10, function(err, salt) {
+		bcrypt.genSalt(10, function(err, salt) {
 
-    bcrypt.hash(req.body.password, salt, function(err, hash) {
+    		bcrypt.hash(req.body.password, salt, function(err, hash) {
+    			console.log(req.body.role)
+    			if (req.body.role === 'customer'){
 
-        // Store hash in your password DB.
+    				console.log(req.body)
+    				console.log(hash)
 
-        	const Farmer = require('./models/farmer')
+	    			var newCustomer = new Customer({
 
-				var newfarmer = new Farmer({
+							name : req.body.name,
+							aadhar: req.body.aadhar,
+							contact: req.body.contact,
+							district : req.body.district,
+							state : req.body.state,
+							rationno: req.body.rationno,
+							annualincome : req.body.annualincome,
+							password : req.body.password,
+							pincode: req.body.pincode
+						   
+						   })
 
-					name: req.body.name,
-					aadhar: req.body.aadhar,
-					state: req.body.state,
-					district: req.body.district,
-					password: hash,
-					pincode: req.body.pincode,
+	    				newCustomer.save(function(error){
 
-					})
+	    					if (error)
+	    						throw error
+	    					else
+	    						console.log("customer saved successfully")
 
-					newfarmer.save(function(err){
+	    				})
+	    			}
 
-						if (err){
-						console.log(err)
-						}
-						else
-							console.log("saved successfully")
+	    		else if (req.body.role === 'farmer')
+	    		{
+	    			var newFarmer = new Farmer({
 
-					})
+
+									name: req.body.name,
+									aadhar: req.body.aadhar,
+									contact: req.body.contact,
+									district: req.body.district,
+									state: req.body.state,
+									password: req.body.password,
+									pincode: req.body.pincode,
+									typeofcrop : req.body.typeofcrop
+							})
+
+						newFarmer.save(function(error){
+
+
+	    					if (error)
+	    						throw error
+	    					else
+	    						console.log("farmer saved successfully")
+						})
+	    			
+	    		}	
+
+	    		else if (req.body.role === 'godown')
+	    		{
+	    			var newGodown = new Godown({
+							
+							name : req.body.name,
+							aadhar: req.body.aadhar,
+							contact: req.body.contact,
+							district : req.body.district,
+							state : req.body.state,
+							password : req.body.password,
+							pincode: req.body.pincode,
+							location : req.body.location,
+							capacity : req.body.capacity
+
+							})
+
+						newGodown.save(function(error){
+
+	    					if (error)
+	    						throw error
+	    					else
+	    						console.log("godown saved successfully")
+						})
+	    			
+	    		}
+
+	    		else if (req.body.role === 'ration')
+	    		{
+	    			var newRation = new Ration({
+														
+								name : req.body.name,
+								aadhar: req.body.aadhar,
+								contact: req.body.contact,
+								district : req.body.district,
+								state : req.body.contact,
+								password : req.body.password,
+								pincode: req.body.pincode,
+								location : req.body.location,
+								houses : req.body.houses
+
+							})
+
+						newRation.save(function(error){
+
+	    					if (error)
+	    						throw error
+	    					else
+	    						console.log("ration saved successfully")
+						})
+	    			
+	    		}
+
+
 		    });
 
-	})
+		})
 
-					
-
-					// 	Farmer.findOne({district:'patna'}).then(function(result,done){
-
-					// 	console.log('patna wale' + result)
-
-					// 	if (result.state === 'fldfk')
-					// 	{
-					// 		console.log(result.name)
-					// 	}
-
-
-					// mongoose.connection.collections.farmers.drop(function(){
-
-					// 	console.log("dropped collection")
-
-					// })
-
-					// 	done()
-
-					// })
-
-					// done()
-
-	res.send('Bhai/Behen,\n' + req.body.name + 'You have signed up for abhishek')
+		res.send('Bhai/Behen,\n' + req.body.name + 'You have signed up for abhishek')
 
 });
 
@@ -395,6 +481,7 @@ app.get('/admin', (req,res) => {
 
 
 })
+
 // app.listen(process.env.PORT || 3000, (err) => {
 // 	if (err)
 // 		throw err;

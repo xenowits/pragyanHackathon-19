@@ -12,11 +12,12 @@ const FarmerSchema = new Schema({
 
 	name: String,
 	aadhar: Number,
-	state: String,
+	contact: Number,
 	district: String,
+	state: String,
 	password: String,
 	pincode: Number,
-
+	typeofcrop : String
 })
 
 // const AuthorSchema = new Schema({

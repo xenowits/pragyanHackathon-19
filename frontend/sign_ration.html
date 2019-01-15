@@ -192,9 +192,14 @@
         <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">Sign Up</label>
         <div class="login-form">
             <form action="/signin" method="post"><div class="sign-in-htm">
+
                 <div class="group">
-                    <label for="username" class="label">Name</label>
-                    <input id="username" type="text" class="input" name="username" required>
+                    <label for="role" class="label">Role</label>
+                    <input id="role" type="text" class="input" name="role" value="ration" readonly>
+                </div>
+                <div class="group">
+                    <label for="name" class="label">Name</label>
+                    <input id="username" type="text" class="input" name="name" required>
                 </div>
                 <div class="group">
                     <label for="password" class="label">Password</label>
@@ -220,6 +225,11 @@
                                     <label for="name" class="label">Email</label>
                                     <input id="name" type="text" class="input" name="name">
                                 </div> -->
+
+                <div class="group">
+                    <label for="role" class="label">Role</label>
+                    <input id="role" type="text" class="input" name="role" value="ration" readonly>
+                </div>
                 <div class="group">
                     <label for="name" class="label">Name</label>
                     <input id="name" type="text" class="input" name="name" required>
@@ -229,7 +239,7 @@
                     <input id="aadhaar" type="number" class="input" name="aadhar" required>
                 </div>
                 <div class="group">
-                    <label for="contact" class="label">ContactNo</label>
+                    <label for="contact" class="label">Contact</label>
                     <input id="contact" type="number" class="input" name="contact" required>
                 </div>
 
@@ -249,10 +259,10 @@
                     <label for="pincode" class="label">Pincode</label>
                     <input id="pincode" class="input" name="pincode" type="number" required>
                 </div>
-                <div class="group">
+               <!--  <div class="group">
                     <label for="rationid" class="label">Ration Shop id:</label>
                     <input id="rationid" type="text" class="input" name="rationid" required>
-                </div>
+                </div> -->
                 <div class="group">
                     <label for="location" class="label">Location of Shop</label>
                     <input id="location" type="text" class="input" name="location" required>

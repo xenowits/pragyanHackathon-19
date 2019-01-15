@@ -17,6 +17,8 @@ var server = app.listen(port, function(){
   console.log('listening on :' + port);
 });
 
+app.set('view engine', 'ejs');
+
 var io = require('socket.io')(server);
 
 io.sockets.on('connection', (socket) => {
@@ -83,8 +85,13 @@ app.use(passport.initialize())
 
 const Farmer = require('./models/farmer')
 
-// mongoose.connect('mongodb://admin:123456a@ds129593.mlab.com:29593/pragyanhackathon',{ useNewUrlParser: true },)
-mongoose.connect('mongodb://localhost/pragyanhackathon1',{ useNewUrlParser: true })
+const State = require('./models/state')
+
+const Crop = require('./models/state')
+
+mongoose.connect('mongodb://admin:123456a@ds129593.mlab.com:29593/pragyanhackathon',{ useNewUrlParser: true },)
+
+// mongoose.connect('mongodb://localhost/pragyanhackathon1',{ useNewUrlParser: true })
 
 mongoose.connection.once('open',function(){
 
@@ -98,9 +105,47 @@ console.log("Connection is established successfully")
 
 app.get('/', (req,res) => {
 
-	res.sendFile(path.join(__dirname +'/frontend/signin.html'));
+	res.sendFile(path.join(__dirname +'/landing-folder/index.html'));
 
 })
+
+app.get('/ejs' , (req,res) => {
+
+	res.render('pages/indexo')
+
+})
+
+///// sign in or sign up pages according to consumer type
+
+app.get('/sign_farmer' , (req,res) => {
+
+	res.sendFile(path.join(__dirname +'/frontend/sign_farmer.html'));
+
+})
+
+
+app.get('/sign_consumer' , (req,res) => {
+
+	res.sendFile(path.join(__dirname +'/frontend/sign_customer.html'));
+
+})
+
+
+app.get('/sign_godown' , (req,res) => {
+
+	res.sendFile(path.join(__dirname +'/frontend/sign_godown.html'));
+
+})
+
+
+
+app.get('/sign_vendor' , (req,res) => {
+
+	res.sendFile(path.join(__dirname +'/frontend/sign_ration.html'));
+
+})
+
+///// end of sign in sign up block
 
 
 passport.use(new LocalStrategy(
@@ -184,11 +229,18 @@ app.post('/signin',
 
  		// console.log('ho gya')
 
-  });
+ });
+
+// app.get('/' , (req,res) => {
+
+// 	// res.send("fdfd")
+// 	res.sendFile(path.join(__dirname + '/frontend/sign_farmer.html'))
 
 
-
+// })
 app.get('/welcome' , (req,res) => {
+
+
 
 	// res.sendFile(path.join(__dirname +'/frontend/xx.html'));
 	// var newfarmer = new Farmer({
@@ -204,21 +256,71 @@ app.get('/welcome' , (req,res) => {
 	// 	else
 	// 		console.log("saved successfully")
 	// })
-	Farmer.find({}).then(function(result){
+	// Farmer.find({}).then(function(result){
+
+	// 	var x = []
+	// 	for (var i = 0 ; i < result.length ; i++)
+	// 	{
+	// 		console.log(result[i].state)
+	// 		x.push(result[i].name)
+	// 		// console.log()
+	// 	}
+	// 	// res.send(x)		
+	// })
+
+	var newState = new State({
+
+		name : "bihar",
+		crops : [ { name : "wheat" , rate : 120}, 
+
+					{ name : "rice" , rate : 130 }
+					]
+
+	})
+
+	// var newCrop = new Crop({
+	// 	name : "wheat",
+	// 	rate : 15
+	// })
+
+	newState.save(function(err){
+
+		if (err)
+			throw err
+		else
+			console.log("successfully saved")
+
+	})
+
+
+	State.find({name:"bihar"}).then(function(result){
 
 		var x = []
+
 		for (var i = 0 ; i < result.length ; i++)
 		{
-			console.log(result[i].state)
-			x.push(result[i].name)
-			// console.log()
+			for (var j = 0 ; j < result[i].crops.length ; j++)
+			{
+					x.push(result[i].crops[j].rate)
+			}
 		}
-		// res.send(x)		
-	})
-	res.download('./mozilla.pdf')
+		res.send(x)
+
+
+	// })
+	// mongoose.connection.collections.states.drop().then(function(){
+
+	// 	console.log("successfully dropped states table")
+	// })
+	// res.download('./mozilla.pdf')
+})
 })
 
+app.get('/downloads/download' , (req,res) => {
 
+	res.download('./mozilla.pdf')
+
+})
 
 
 app.post('/signup', (req,res) => {
@@ -285,7 +387,14 @@ app.post('/signup', (req,res) => {
 
 });
 
+/// admin
 
+app.get('/admin', (req,res) => {
+
+	res.sendFile(path.join(__dirname + '/Login_v9/index.html'))
+
+
+})
 // app.listen(process.env.PORT || 3000, (err) => {
 // 	if (err)
 // 		throw err;

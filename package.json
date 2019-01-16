@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "mocha",
-    "serve": "nodemon index.js"
+    "serve": "nodemon index.js",
+    "start" : "node index.js"
   },
   "keywords": [
     "hackathon"

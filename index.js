@@ -11,6 +11,8 @@ const flash = require('connect-flash')
 
 var bcrypt = require('bcryptjs') 
 
+const faker = require('faker')
+
 var port = process.env.PORT || 3000;
 
 var server = app.listen(port, function(){
@@ -19,34 +21,41 @@ var server = app.listen(port, function(){
 
 app.set('view engine', 'ejs');
 
+/// socket.io block starts
+
 var io = require('socket.io')(server);
 
 io.sockets.on('connection', (socket) => {
 
-console.log('user connected')
+	console.log('user connected')
+	
+	socket.on('trytest' , function(arg){
+		io.sockets.emit('trytest' , arg)	
+	})
+	
 
-socket.on('join', function(userNickname) {
+	socket.on('join', function(userNickname) {
 
         console.log(userNickname +" : has joined the chat "  );
 
- socket.broadcast.emit('userjoinedthechat',userNickname +" : has   joined the chat ");
+ 		socket.broadcast.emit('userjoinedthechat',userNickname +" : has   joined the chat ");
     })
 
 
-socket.on('messagedetection', (senderNickname,messageContent) => {
+	socket.on('messagedetection', (senderNickname,messageContent) => {
        
        //log the message in console 
 
-    console.log(senderNickname+" : " +messageContent)
+		    console.log(senderNickname+" : " +messageContent)
 
       //create a message object 
       
-      let  message = {"message":messageContent, 
+     		 let  message = {"message":messageContent, 
                       "senderNickname":senderNickname}
         
 // send the message to all users including the sender  using io.emit  
        
-      io.emit('message', message )
+     		 io.emit('message', message )
      
       })
 
@@ -59,6 +68,8 @@ socket.on('messagedetection', (senderNickname,messageContent) => {
     })
 
 })
+
+/// socket.io block ends
 
 const session = require('express-session');
 
@@ -90,7 +101,7 @@ const Farmer = require('./models/farmer')
 
 const State = require('./models/state')
 
-const Crop = require('./models/state')
+const Crop = require('./models/crop')
 
 const Godown = require('./models/godown')
 
@@ -98,13 +109,137 @@ const Customer = require('./models/customer')
 
 const Ration = require('./models/ration')
 
+const Complaint = require('./models/complaint')
+
+const Student = require('./models/student')
 
 /// connection to database done here
 
 
-mongoose.connect('mongodb://admin:123456a@ds129593.mlab.com:29593/pragyanhackathon',{ useNewUrlParser: true },)
+/////// TESTING AND DATA GENERATION BLOCK
+		
 
-// mongoose.connect('mongodb://localhost/pragyanhackathon1',{ useNewUrlParser: true })
+	const states = [
+   "Andhra Pradesh",
+   "Arunachal Pradesh",
+   "Assam",
+   "Bihar",
+   "Chhattisgarh",
+   "Chandigarh",
+   "Dadra and Nagar Haveli",
+   "Daman and Diu",
+   "Delhi",
+   "Goa",
+   "Gujarat",
+   "Haryana",
+   "Himachal Pradesh",
+   "Jammu and Kashmir",
+   "Jharkhand",
+   "Karnataka",
+   "Kerala",
+   "Madhya Pradesh",
+   "Maharashtra",
+   "Manipur",
+   "Meghalaya",
+   "Mizoram",
+   "Nagaland",
+   "Orissa",
+   "Punjab",
+   "Pondicherry",
+   "Rajasthan",
+   	"Sikkim",
+   "Tamil Nadu",
+   "Tripura",
+   "Uttar Pradesh",
+  	"Uttarakhand",
+   "West Bengal"
+]
+
+	/// generating state data for crop msps
+
+	// const crops = ['wheat' , 'paddy' , 'dal', 'bajra', 'maize' , 'gram', 'moong', 'urad', 'soyabean']
+	
+	// for (var j =0 ; j < states.length ; j++){
+
+	// 	var x = []
+
+	// 	for (var i = 0 ; i < crops.length ; i++)
+	// 	{
+	// 		var obj = {
+	// 			"name" : crops[i],
+	// 			"rate" : faker.random.number({'min':10,'max':30})
+	// 		}
+	// 		x.push(obj)
+	// 	}
+	// 	var newState = new State({
+	// 		name : states[j],
+	// 		crops : x
+	// 	})
+	// 	console.log(x)
+	// 	newState.save(function(err){
+	// 		if (err)
+	// 			throw err
+	// 		else 
+	// 			console.log( states[j] )
+	// 	})
+	// }
+
+		/// generating state data finished 
+
+		/// generating crop rates
+
+		// for (var i =0 ; i< crops.length; i++)
+		// {
+		// 	var newCrop = new Crop({
+
+		// 		"name" : crops[i],
+		// 		"rate" : faker.random.number({'min':10,'max':30})
+
+		// 	})
+		// 	console.log(newCrop)
+		// 	newCrop.save(function(err){
+
+		// 		if (err)
+		// 			throw err
+		// 		else
+		// 			console.log("successfully saved crops")
+		// 	})
+		// }
+
+		/// generating crop rates successfully done 
+
+		//// generating complaint segment
+
+		// var newComplaint = new Complaint({
+		// 		role : 1,
+		// 		aadhar: 234532345,
+		// 		content: "content h",
+		// 		type : "badmashi"
+		// })
+		// newComplaint.save(function(err){
+
+		// 	if (err)
+		// 		throw err
+		// 	else
+		// 		console.log("complaint successfully registered")
+
+		// })
+
+		//// generated complaint segment over
+
+
+
+
+
+
+///// testing area ends
+
+
+//// connection to database section
+
+// mongoose.connect('mongodb://admin:123456a@ds129593.mlab.com:29593/pragyanhackathon',{ useNewUrlParser: true },)
+
+mongoose.connect('mongodb://localhost/pragyanhackathon1',{ useNewUrlParser: true })
 
 mongoose.connection.once('open',function(){
 
@@ -125,11 +260,50 @@ app.get('/', (req,res) => {
 
 })
 
-app.get('/ejs' , (req,res) => {
+app.post('/aman' , (req,res) => {
+	console.log("aman post ka ho gya")
+	if (req.body)
+	{
+	const obj = { "status" : "ok" }
+	const newStudent = new Student({
 
-	res.render('pages/indexo')
+		studentName : req.body.studentName,
+		id : req.body.id
+
+	})
+
+	newStudent.save(function(err){
+
+		if (err)
+			throw err
+		else
+			console.log("saved student")
+	})
+
+	res.writeHead(404);
+	res.end();
+	}
+
+	res.send(404).end();
+})
+
+app.get('/amans' , (req,res) => {
+
+	res.sendFile(path.join(__dirname + '/xyz.html'))
 
 })
+// app.get('/ejs' , (req,res) => {
+
+// 	// res.render('pages/indexo', {user : 'abhishek'})
+// 	State.find({}).then()
+// 	var t = {"users" : [
+//             { "name": 'John' },
+//             { name: 'Mike' },
+//             { name: 'Samantha' }
+//   	]}
+
+// 	res.render('pages/index', t);
+// })
 
 ///// sign in or sign up pages according to consumer type
 
@@ -250,15 +424,17 @@ app.post('/signin', function(req,res){
  	console.log(req.body)
  	res.send(req.body)
 
- });
+});
+
 
 // app.get('/' , (req,res) => {
 
 // 	// res.send("fdfd")
 // 	res.sendFile(path.join(__dirname + '/frontend/sign_farmer.html'))
 
-
 // })
+
+
 app.get('/welcome' , (req,res) => {
 
 
@@ -347,6 +523,8 @@ app.get('/downloads/download' , (req,res) => {
 
 })
 
+/// download section ends here
+
 //// signup 
 
 app.post('/signup', (req,res) => {
@@ -384,6 +562,7 @@ app.post('/signup', (req,res) => {
 	    						console.log("customer saved successfully")
 
 	    				})
+	    				res.send(req.body)
 	    			}
 
 	    		else if (req.body.role === 'farmer')
@@ -409,7 +588,7 @@ app.post('/signup', (req,res) => {
 	    					else
 	    						console.log("farmer saved successfully")
 						})
-	    			
+	    			res.send(req.body)
 	    		}	
 
 	    		else if (req.body.role === 'godown')
@@ -435,7 +614,7 @@ app.post('/signup', (req,res) => {
 	    					else
 	    						console.log("godown saved successfully")
 						})
-	    			
+	    			res.send(req.body)
 	    		}
 
 	    		else if (req.body.role === 'ration')
@@ -461,7 +640,7 @@ app.post('/signup', (req,res) => {
 	    					else
 	    						console.log("ration saved successfully")
 						})
-	    			
+	    			res.send(req.body)
 	    		}
 
 
@@ -469,7 +648,7 @@ app.post('/signup', (req,res) => {
 
 		})
 
-		res.send('Bhai/Behen,\n' + req.body.name + 'You have signed up for abhishek')
+		// res.send('Bhai/Behen,\n' + req.body.name + 'You have signed up for abhishek')
 
 });
 

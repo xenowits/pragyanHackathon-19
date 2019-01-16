@@ -18,6 +18,7 @@ const FarmerSchema = new Schema({
 	password: String,
 	pincode: Number,
 	typeofcrop : String
+	
 })
 
 // const AuthorSchema = new Schema({

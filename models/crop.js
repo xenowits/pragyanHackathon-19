@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 const CropSchema = new Schema({
 
 	name: String,
-	rate : Number
+	rate: Number
 })
 
 const Crop = mongoose.model('crop', CropSchema)

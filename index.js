@@ -237,9 +237,9 @@ const Student = require('./models/student')
 
 //// connection to database section
 
-// mongoose.connect('mongodb://admin:123456a@ds129593.mlab.com:29593/pragyanhackathon',{ useNewUrlParser: true },)
+mongoose.connect('mongodb://admin:123456a@ds129593.mlab.com:29593/pragyanhackathon',{ useNewUrlParser: true },)
 
-mongoose.connect('mongodb://localhost/pragyanhackathon1',{ useNewUrlParser: true })
+// mongoose.connect('mongodb://localhost/pragyanhackathon1',{ useNewUrlParser: true })
 
 mongoose.connection.once('open',function(){
 
@@ -261,6 +261,7 @@ app.get('/', (req,res) => {
 })
 
 app.post('/aman' , (req,res) => {
+	
 	console.log("aman post ka ho gya")
 	if (req.body)
 	{

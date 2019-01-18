@@ -594,49 +594,14 @@ app.post('/signup', (req,res) => {
                async function g(){ 
 
                  let results = await Godown.find({state : req.body.state , district : req.body.district})
-                 // console.log(results)
-               //   .then(function(results){
-                    
-               //      // console.log(results)
-
-               //      for (var i = 0 ; i < results.length ; i++)
-               //      {
-
-               //          x.push(results[i]._id.toString())
-               //          console.log(results[i]._id.toString())
-               //      }
-
-               //    })
-               //    return x;
+                 
                   let hyr = await k(results);
                   // console.log(x);
                   return x;
                }
-
-              async function f(){
-
-                  // let promise3 = new Promise(function(resolve,reject){
-
-                  // console.log(req.body.state + req.body.district)
-
-                  // if (x.length === 0){
-                  //   resolve("done");
-                  // }
-                  // resolve("done")
-                  // return x
-            // })
-
-            // let result = await promise3
-            // // return promise3.then(function(rej){
-            // //   resolve("done")
-            // // });
-            // return promise3;
-              let result = await g()
-              return result
-        }
             
            function main(){ 
-            // console.log('madfd')
+
             var promise = g();
 
             promise.then(function(result){
@@ -666,15 +631,10 @@ app.post('/signup', (req,res) => {
                 // return newFarmer
                 res.send(x)
             })
-            // .then(function(a){
-
-            //     res.send(a)
-            //     resolve("done")
-            // })
           }
 
           main();
-          
+
 	    		}	
 
 	    		else if (req.body.role === 'godown')

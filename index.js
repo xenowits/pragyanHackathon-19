@@ -30,6 +30,8 @@ io.sockets.on('connection', (socket) => {
 
 	console.log('user connected')
 	
+
+  
 	socket.on('trytest' , function(arg){
 		io.sockets.emit('trytest' , arg)	
 	})

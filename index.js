@@ -122,6 +122,7 @@ passport.use(new LocalStrategy(
 
       		// console.log('ye wala bcrypt ka h ' + res)
 
+
     		if (err)
     		{
     			throw err

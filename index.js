@@ -358,7 +358,7 @@ passport.use(new LocalStrategy(
   function(username, password, done) {
     Farmer.findOne({ name: username }, function(err, user) {
       if (err) { 
-      	console.log()
+      	console.log("err wala h")
       	return done(err); }
       if (!user) {
         return done(null, false, { message: 'Incorrect username.' });
@@ -367,26 +367,27 @@ passport.use(new LocalStrategy(
       //   return done(null, false, { message: 'Incorrect password.' });
       // }
       // return done(null, user);
+      console.log(password === user.password)
 
       bcrypt.compare(password, user.password, function(err, res) {
 
-      		// console.log('ye wala bcrypt ka h ' + res)
+      		console.log(password === user.password)
 
     		if (err)
     		{
     			throw err
-    			// console.log('err wala h')
+    			console.log('err wala h')
     		}
 
     		else{
 
-    			// console.log('else wala block h ' + res)
+    			console.log('else wala block h ' + res)
     			if (res){
     				return done(null,user)
-    				// console.log('res wala true h')
+    				console.log('res wala true h')
     			}
     			else{
-    				// console.log('res wala false h')
+    				console.log('res wala false h')
     				return done(null, false, { message: 'Incorrect password.' });
     				
     			}
@@ -411,30 +412,12 @@ passport.deserializeUser(function(id, done) {
 /// paasport js block ends here 
 
 
-app.post('/signin', function(req,res){
+app.post('/signin',
 
-  // passport.authenticate('local', { 
-  // 								failureRedirect: '/',
-  //                               failureFlash: true }),
- 	
+  passport.authenticate('local', { 
+  								failureRedirect: '/',
+                                failureFlash: true }), function(req,res){
 
- 	//  function(req,res){
-
- 	//  	// console.log(req.body)
-
- 	//  	// console.log(req.body.password)
-
- 	//  	Farmer.findOne({name: req.body.username}).then(function(result){
- 	//  		// Farmer.find({"aadhar": { $gt: 11234565} } ).then(function(result){
-
- 	//  		res.send('Hey there...'+req.body.username + '!!! U know Abhishek loves u..Thanks for signing in')
-
- 	//  		res.send(result);
- 	//  	})
-
- 	//  	// res.send(req.body)
-
- 	// 	// console.log('ho gya')
  	console.log(req.body)
  	res.send(req.body)
 
@@ -451,33 +434,6 @@ app.post('/signin', function(req,res){
 
 app.get('/welcome' , (req,res) => {
 
-
-
-	// res.sendFile(path.join(__dirname +'/frontend/xx.html'));
-	// var newfarmer = new Farmer({
-
-	// 	name: "abhishek",
-	// 	aadhar: 12234567,
-	// 	state: [ "tn" , "bihar" , "up"]
-	// })
-
-	// newfarmer.save(function(err){
-	// 	if (err)
-	// 		throw err
-	// 	else
-	// 		console.log("saved successfully")
-	// })
-	// Farmer.find({}).then(function(result){
-
-	// 	var x = []
-	// 	for (var i = 0 ; i < result.length ; i++)
-	// 	{
-	// 		console.log(result[i].state)
-	// 		x.push(result[i].name)
-	// 		// console.log()
-	// 	}
-	// 	// res.send(x)		
-	// })
 
 	var newState = new State({
 
@@ -563,7 +519,7 @@ app.post('/signup', (req,res) => {
 							state : req.body.state,
 							rationno: req.body.rationno,
 							annualincome : req.body.annualincome,
-							password : req.body.password,
+							password : hash,
 							pincode: req.body.pincode
 						   
 						   })
@@ -615,7 +571,7 @@ app.post('/signup', (req,res) => {
                   contact: req.body.contact,
                   district: req.body.district,
                   state: req.body.state,
-                  password: req.body.password,
+                  password: hash,
                   pincode: req.body.pincode,
                   typeofcrop : req.body.typeofcrop,
                   nearestgodown : x
@@ -626,7 +582,7 @@ app.post('/signup', (req,res) => {
                 if (error)
                   throw error
                 else
-                  console.log("farmer saved successfully")
+                  console.log("farmer saved successfully " + newFarmer )
             })
                 // return newFarmer
                 res.send(x)
@@ -646,7 +602,7 @@ app.post('/signup', (req,res) => {
 							contact: req.body.contact,
 							district : req.body.district,
 							state : req.body.state,
-							password : req.body.password,
+							password : hash,
 							pincode: req.body.pincode,
 							location : req.body.location,
 							capacity : req.body.capacity
@@ -672,7 +628,7 @@ app.post('/signup', (req,res) => {
 								contact: req.body.contact,
 								district : req.body.district,
 								state : req.body.contact,
-								password : req.body.password,
+								password : hash,
 								pincode: req.body.pincode,
 								location : req.body.location,
 								houses : req.body.houses

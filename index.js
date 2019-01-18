@@ -1,6 +1,6 @@
 const mocha = require('mocha')
 
-const assert = require('assert')
+// const assert = require('assert')
 
 const express = require('express')
 const app = express()
@@ -13,6 +13,8 @@ var bcrypt = require('bcryptjs')
 
 const faker = require('faker')
 
+const helmet = require('helmet')
+
 var port = process.env.PORT || 3000;
 
 var server = app.listen(port, function(){
@@ -21,10 +23,9 @@ var server = app.listen(port, function(){
 
 app.set('view engine', 'ejs');
 
+app.use(helmet())
+
 /// socket.io block starts
-
-
-
 
 
 var io = require('socket.io')(server);
@@ -245,9 +246,9 @@ const Student = require('./models/student')
 
 //// connection to database section
 
-mongoose.connect('mongodb://admin:123456a@ds129593.mlab.com:29593/pragyanhackathon',{ useNewUrlParser: true },)
+// mongoose.connect('mongodb://admin:123456a@ds129593.mlab.com:29593/pragyanhackathon',{ useNewUrlParser: true },)
 
-// mongoose.connect('mongodb://localhost/pragyanhackathon1',{ useNewUrlParser: true })
+mongoose.connect('mongodb://localhost/pragyanhackathon1',{ useNewUrlParser: true })
 
 mongoose.connection.once('open',function(){
 

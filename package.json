@@ -17,6 +17,7 @@
   "author": "abhishek",
   "license": "MIT",
   "dependencies": {
+    "async": "^2.6.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "connect-flash": "^0.1.1",
@@ -31,6 +32,7 @@
     "npm": "^6.5.0",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
+    "promise": "^8.0.2",
     "socket.io": "^2.2.0"
   }
 }

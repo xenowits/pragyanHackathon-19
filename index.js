@@ -15,6 +15,10 @@ const faker = require('faker')
 
 const helmet = require('helmet')
 
+const async = require('async')
+
+const Promise = require('promise')
+
 var port = process.env.PORT || 3000;
 
 var server = app.listen(port, function(){
@@ -577,28 +581,100 @@ app.post('/signup', (req,res) => {
 
 	    		else if (req.body.role === 'farmer')
 	    		{
-	    			var newFarmer = new Farmer({
+            var x = []
+            async function k(results){
 
+                    for (var i = 0 ; i < results.length ; i++)
+                    {
 
-									name: req.body.name,
-									aadhar: req.body.aadhar,
-									contact: req.body.contact,
-									district: req.body.district,
-									state: req.body.state,
-									password: req.body.password,
-									pincode: req.body.pincode,
-									typeofcrop : req.body.typeofcrop
-							})
+                        x.push({"id" : results[i]._id.toString()})
+                        console.log(results[i]._id.toString())
+                    }
+            }
+               async function g(){ 
 
-						newFarmer.save(function(error){
+                 let results = await Godown.find({state : req.body.state , district : req.body.district})
+                 // console.log(results)
+               //   .then(function(results){
+                    
+               //      // console.log(results)
 
+               //      for (var i = 0 ; i < results.length ; i++)
+               //      {
 
-	    					if (error)
-	    						throw error
-	    					else
-	    						console.log("farmer saved successfully")
-						})
-	    			res.send(req.body)
+               //          x.push(results[i]._id.toString())
+               //          console.log(results[i]._id.toString())
+               //      }
+
+               //    })
+               //    return x;
+                  let hyr = await k(results);
+                  // console.log(x);
+                  return x;
+               }
+
+              async function f(){
+
+                  // let promise3 = new Promise(function(resolve,reject){
+
+                  // console.log(req.body.state + req.body.district)
+
+                  // if (x.length === 0){
+                  //   resolve("done");
+                  // }
+                  // resolve("done")
+                  // return x
+            // })
+
+            // let result = await promise3
+            // // return promise3.then(function(rej){
+            // //   resolve("done")
+            // // });
+            // return promise3;
+              let result = await g()
+              return result
+        }
+            
+           function main(){ 
+            // console.log('madfd')
+            var promise = g();
+
+            promise.then(function(result){
+
+                // console.log(typeof x[0])
+                // console.log(Array.isArray(x))
+                var newFarmer = new Farmer({
+
+                  name: req.body.name,
+                  aadhar: req.body.aadhar,
+                  contact: req.body.contact,
+                  district: req.body.district,
+                  state: req.body.state,
+                  password: req.body.password,
+                  pincode: req.body.pincode,
+                  typeofcrop : req.body.typeofcrop,
+                  nearestgodown : x
+              })
+
+                newFarmer.save(function(error){
+
+                if (error)
+                  throw error
+                else
+                  console.log("farmer saved successfully")
+            })
+                // return newFarmer
+                res.send(x)
+            })
+            // .then(function(a){
+
+            //     res.send(a)
+            //     resolve("done")
+            // })
+          }
+
+          main();
+          
 	    		}	
 
 	    		else if (req.body.role === 'godown')

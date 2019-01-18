@@ -8,6 +8,11 @@ const Schema = mongoose.Schema
 // 	pages: Number,
 // })
 
+const GodownSchema = new Schema({
+
+	id : String
+
+})
 const FarmerSchema = new Schema({
 
 	name: String,
@@ -17,8 +22,8 @@ const FarmerSchema = new Schema({
 	state: String,
 	password: String,
 	pincode: Number,
-	typeofcrop : String
-	
+	typeofcrop : String,
+	nearestgodown : [GodownSchema]
 })
 
 // const AuthorSchema = new Schema({

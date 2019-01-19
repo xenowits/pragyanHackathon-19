@@ -12,10 +12,10 @@ const CustomerSchema = new Schema({
 	rationno: String,
 	annualincome : Number,
 	password : String,
-	pincode: Number
+	pincode: Number,
+	vendor : String
 
 })
-
 
 const Customer = mongoose.model('Customer', CustomerSchema)
 

@@ -418,8 +418,12 @@ app.post('/signin',
   								failureRedirect: '/',
                                 failureFlash: true }), function(req,res){
 
- 	console.log(req.body)
- 	res.send(req.body)
+ 	// console.log(req.body)
+ 	// res.send(req.body)
+
+
+
+
 
 });
 
@@ -495,7 +499,9 @@ app.get('/downloads/download' , (req,res) => {
 
 /// download section ends here
 
-//// signup 
+//// SIGNUP BLOCK 
+
+// var x = "fdfdf";
 
 app.post('/signup', (req,res) => {
 
@@ -504,27 +510,48 @@ app.post('/signup', (req,res) => {
 		bcrypt.genSalt(10, function(err, salt) {
 
     		bcrypt.hash(req.body.password, salt, function(err, hash) {
+
     			console.log(req.body.role)
+
     			if (req.body.role === 'customer'){
 
-    				console.log(req.body)
-    				console.log(hash)
+    				// console.log(req.body)
+    				// console.log(hash)
+          var x ;
+            var newCustomer;
+            async function kk(result){
+              x = result._id.toString();
+            }
+            async function jh()
+            {
+               let result = await Ration.findOne({state : req.body.state , district : req.body.district}, function(err,vendor){
+                      if (err)
+                        throw err;
+                })
+               let hyr = await kk(result)
+               return x;
+            }
 
-	    			var newCustomer = new Customer({
+	    				async function s(){
+                let p = await jh()
+                // console.log(newCustomer)
+                console.log("g m h" + x + p)
+                newCustomer = new Customer({
 
-							name : req.body.name,
-							aadhar: req.body.aadhar,
-							contact: req.body.contact,
-							district : req.body.district,
-							state : req.body.state,
-							rationno: req.body.rationno,
-							annualincome : req.body.annualincome,
-							password : hash,
-							pincode: req.body.pincode
-						   
-						   })
+                      name : req.body.name,
+                      aadhar: req.body.aadhar,
+                      contact: req.body.contact,
+                      district : req.body.district,
+                      state : req.body.state,
+                      rationno: req.body.rationno,
+                      annualincome : req.body.annualincome,
+                      password : hash,
+                      pincode: req.body.pincode,
+                      vendor : x
 
-	    				newCustomer.save(function(error){
+               })
+
+                newCustomer.save(function(error){
 
 	    					if (error)
 	    						throw error
@@ -532,7 +559,13 @@ app.post('/signup', (req,res) => {
 	    						console.log("customer saved successfully")
 
 	    				})
-	    				res.send(req.body)
+
+              }
+              s().then(function(result){
+                res.send("true")
+              })
+	    				
+              // res.redirect('/sign_customer')
 	    			}
 
 	    		else if (req.body.role === 'farmer')
@@ -627,7 +660,7 @@ app.post('/signup', (req,res) => {
 								aadhar: req.body.aadhar,
 								contact: req.body.contact,
 								district : req.body.district,
-								state : req.body.contact,
+								state : req.body.state,
 								password : hash,
 								pincode: req.body.pincode,
 								location : req.body.location,

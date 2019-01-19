@@ -5,8 +5,8 @@ const Schema = mongoose.Schema
 const RationSchema = new Schema({
 
 	name : String,
-	aadhar: Number,
-	contact: Number,
+	aadhar: String,
+	contact: String,
 	district : String,
 	state : String,
 	password : String,

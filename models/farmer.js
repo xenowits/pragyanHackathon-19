@@ -17,7 +17,7 @@ const FarmerSchema = new Schema({
 
 	name: String,
 	aadhar: Number,
-	contact: Number,
+	contact: String,
 	district: String,
 	state: String,
 	password: String,

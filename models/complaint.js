@@ -6,9 +6,9 @@ const ComplaintSchema = new Schema({
 
 	role : {
 		type : 'Mixed'},
-	aadhar: Number,
+	aadhar: String,
 	content: String,
-	type : String
+	typeofcomplaint : String
 
 })
 

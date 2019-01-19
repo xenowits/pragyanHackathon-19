@@ -5,11 +5,11 @@ const Schema = mongoose.Schema
 const CustomerSchema = new Schema({
 
 	name : String,
-	aadhar: Number,
-	contact: Number,
+	aadhar: String,
+	contact: String,
 	district : String,
 	state : String,
-	rationno: Number,
+	rationno: String,
 	annualincome : Number,
 	password : String,
 	pincode: Number

@@ -912,8 +912,9 @@ app.post('/signup', (req,res) => {
           var y;
 
           async function k(result){
-
-             y = result._id.toString()
+            console.log(result)
+              if (result)
+                  y = result._id.toString()
 
             // async function r(result){
 

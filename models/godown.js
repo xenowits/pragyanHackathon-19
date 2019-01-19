@@ -6,6 +6,29 @@ const VendorSchema = new Schema({
 	id : String
 
 })
+
+const CropSchema = new Schema({
+
+	"wheat" : Number,
+	 "paddy" : Number,
+	 "dal" : Number,
+	 "bajra": Number,
+	  "maize": Number,
+	  "gram": Number,
+	  "moong": Number,
+	   "urad": Number,
+	  "soyabean": Number,
+
+}) 
+
+const RequestSchema = new Schema({
+
+	"crop" : String,
+	"quantity" : Number,
+	"price" : Number
+
+})
+
 const GodownSchema = new Schema({
 
 	name : String,
@@ -18,7 +41,11 @@ const GodownSchema = new Schema({
 	location : String,
 	capacity : Number,
 	listofvendors : [VendorSchema],
-	listoffarmers : [VendorSchema]
+	listoffarmers : [VendorSchema],
+	stockofcrops : CropSchema,
+	cropstogiveeachtime : CropSchema,
+	farmerrequests : RequestSchema
+
 })
 
 

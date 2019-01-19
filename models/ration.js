@@ -8,6 +8,21 @@ const CustomerSchema = new Schema({
 
 })
 
+const CropSchema = new Schema({
+
+	"wheat" : Number,
+	 "paddy" : Number,
+	 "dal" : Number,
+	 "bajra": Number,
+	  "maize": Number,
+	  "gram": Number,
+	  "moong": Number,
+	   "urad": Number,
+	  "soyabean": Number,
+
+}) 
+
+
 const RationSchema = new Schema({
 
 	name : String,
@@ -20,7 +35,9 @@ const RationSchema = new Schema({
 	location : String,
 	houses : Number,
 	assignedgodownid : String,
-	listofcustomers : [CustomerSchema]
+	listofcustomers : [CustomerSchema],
+	stockofcrops : CropSchema,
+	cropstogiveeachtime : CropSchema
 })
 
 

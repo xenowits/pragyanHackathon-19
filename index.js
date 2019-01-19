@@ -175,7 +175,7 @@ const Student = require('./models/student')
 
 	/// generating state data for crop msps
 
-	// const crops = ['wheat' , 'paddy' , 'dal', 'bajra', 'maize' , 'gram', 'moong', 'urad', 'soyabean']
+	const crops = ['wheat' , 'paddy' , 'dal', 'bajra', 'maize' , 'gram', 'moong', 'urad', 'soyabean']
 	
 	// for (var j =0 ; j < states.length ; j++){
 
@@ -665,56 +665,341 @@ app.post('/signin/ration', function(req,res){
 
 });
 
+app.get('/signin' , (req,res) => {
 
-app.get('/welcome' , (req,res) => {
+  if (req.body.role == 1)
+  {
+                  var x = []
 
+            async function kk(results){
+                  for(var i = 0 ; i < results.length ; i++)
+                  {
+                    x.push(results[i].password)
+                  }
+            }
+            async function jh()
+            {
+               let results = await Farmer.find({ aadhar : req.body.aadhar}, function(err,vendor){
+                      if (err)
+                        throw err;
+                })
+               let hyr = await kk(results)
+               return x;
+            }
+            let ggg = false; 
+            async function df(){
+              for (var i = 0 ; i < x.length ;i++)
+                {
+                  const match = await bcrypt.compare(req.body.password,x[i])
+                  if (match)
+                  {
+                    res.send("OK")
+                    ggg = true
+                    break;
+                  }
+                }
+            }
 
-	var newState = new State({
+            async function main()
+            {
+                
+                let p = await jh();
+                console.log(x.length)
+                await df()
+                if (!ggg)
+                  res.redirect('/');
+            }
+            main();
+  }
+  
+    if (req.body.role == 2)
+  {
+                  var x = []
 
-		name : "bihar",
-		crops : [ { name : "wheat" , rate : 120}, 
+            async function kk(results){
+                  for(var i = 0 ; i < results.length ; i++)
+                  {
+                    x.push(results[i].password)
+                  }
+            }
+            async function jh()
+            {
+               let results = await Godown.find({ aadhar : req.body.aadhar}, function(err,vendor){
+                      if (err)
+                        throw err;
+                })
+               let hyr = await kk(results)
+               return x;
+            }
+            let ggg = false; 
+            async function df(){
+              for (var i = 0 ; i < x.length ;i++)
+                {
+                  const match = await bcrypt.compare(req.body.password,x[i])
+                  if (match)
+                  {
+                    res.send("OK")
+                    ggg = true
+                    break;
+                  }
+                }
+            }
 
-					{ name : "rice" , rate : 130 }
-					]
+            async function main()
+            {
+                
+                let p = await jh();
+                console.log(x.length)
+                await df()
+                if (!ggg)
+                  res.redirect('/');
+            }
+            main();
+  }
+          if (req.body.role == 3)
+  {
+                  var x = []
 
-	})
+            async function kk(results){
+                  for(var i = 0 ; i < results.length ; i++)
+                  {
+                    x.push(results[i].password)
+                  }
+            }
+            async function jh()
+            {
+               let results = await Ration.find({ aadhar : req.body.aadhar}, function(err,vendor){
+                      if (err)
+                        throw err;
+                })
+               let hyr = await kk(results)
+               return x;
+            }
+            let ggg = false; 
+            async function df(){
+              for (var i = 0 ; i < x.length ;i++)
+                {
+                  const match = await bcrypt.compare(req.body.password,x[i])
+                  if (match)
+                  {
+                    res.send("OK")
+                    ggg = true
+                    break;
+                  }
+                }
+            }
 
-	// var newCrop = new Crop({
-	// 	name : "wheat",
-	// 	rate : 15
-	// })
+            async function main()
+            {
+                
+                let p = await jh();
+                console.log(x.length)
+                await df()
+                if (!ggg)
+                  res.redirect('/');
+            }
+            main();
+  }
 
-	newState.save(function(err){
+          if (req.body.role == 4)
+  {
+                  var x = []
 
-		if (err)
-			throw err
-		else
-			console.log("successfully saved")
+            async function kk(results){
+                  for(var i = 0 ; i < results.length ; i++)
+                  {
+                    x.push(results[i].password)
+                  }
+            }
+            async function jh()
+            {
+               let results = await Customer.find({ aadhar : req.body.aadhar}, function(err,vendor){
+                      if (err)
+                        throw err;
+                })
+               let hyr = await kk(results)
+               return x;
+            }
+            let ggg = false; 
+            async function df(){
+              for (var i = 0 ; i < x.length ;i++)
+                {
+                  const match = await bcrypt.compare(req.body.password,x[i])
+                  if (match)
+                  {
+                    res.send("OK")
+                    ggg = true
+                    break;
+                  }
+                }
+            }
 
-	})
+            async function main()
+            {
+                
+                let p = await jh();
+                console.log(x.length)
+                await df()
+                if (!ggg)
+                  res.redirect('/');
+            }
+            main();
+  }
 
-
-	State.find({name:"bihar"}).then(function(result){
-
-		var x = []
-
-		for (var i = 0 ; i < result.length ; i++)
-		{
-			for (var j = 0 ; j < result[i].crops.length ; j++)
-			{
-					x.push(result[i].crops[j].rate)
-			}
-		}
-		res.send(x)
-
-
-	// })
-	// mongoose.connection.collections.states.drop().then(function(){
-
-	// 	console.log("successfully dropped states table")
-	// })
-	// res.download('./mozilla.pdf')
 })
+
+app.get('/profile' , (req,res) => {
+
+  console.log(typeof req.query.role)
+
+  if (req.query.role == 1)
+  {
+    console.log(req.query)
+            let result;
+            let ob;
+
+            async function kk(result)
+            {
+                console.log("yeha aw" + result)
+            }
+            async function jh()
+            {
+              // console.log(req.query.aadhar)
+               result = await Farmer.find({ aadhar : req.query.aadhar}, function(err,vendor){
+                      if (err)
+                        throw err;
+                })
+              let hyr = await kk(result)
+            }
+            async function ko()
+            {
+
+                let p = await jh();
+                ob = { "name" : result[0].name , "aadhar" : result[0].aadhar , "contact" : result[0].contact , "district" : result[0].district , "state" : result[0].state}
+                console.log("fdf" + result)
+            }
+            async function main()
+            {
+                
+                await ko();
+                console.log(result[0].state)
+                res.send(ob)
+            }
+            main();
+  }    
+    if (req.query.role == 2)
+  {
+    console.log(req.query)
+            let result;
+            let ob;
+
+            async function kk(result)
+            {
+                console.log("yeha aw" + result)
+            }
+            async function jh()
+            {
+              // console.log(req.query.aadhar)
+               result = await Godown.find({ aadhar : req.query.aadhar}, function(err,vendor){
+                      if (err)
+                        throw err;
+                })
+              let hyr = await kk(result)
+            }
+            async function ko()
+            {
+
+                let p = await jh();
+                ob = { "name" : result[0].name , "aadhar" : result[0].aadhar , "contact" : result[0].contact , "district" : result[0].district , "state" : result[0].state}
+                console.log("fdf" + result)
+            }
+            async function main()
+            {
+                
+                await ko();
+                console.log(result[0].state)
+                res.send(ob)
+            }
+            main();
+  }
+    if (req.query.role == 3)
+  {
+    console.log(req.query)
+            let result;
+            let ob;
+
+            async function kk(result)
+            {
+                console.log("yeha aw" + result)
+            }
+            async function jh()
+            {
+              // console.log(req.query.aadhar)
+               result = await Vendor.find({ aadhar : req.query.aadhar}, function(err,vendor){
+                      if (err)
+                        throw err;
+                })
+              let hyr = await kk(result)
+            }
+            async function ko()
+            {
+
+                let p = await jh();
+                ob = { "name" : result[0].name , "aadhar" : result[0].aadhar , "contact" : result[0].contact , "district" : result[0].district , "state" : result[0].state}
+                console.log("fdf" + result)
+            }
+            async function main()
+            {
+                
+                await ko();
+                console.log(result[0].state)
+                res.send(ob)
+            }
+            main();
+  }
+
+    if (req.query.role == 4)
+  {
+    console.log(req.query)
+            let result;
+            let ob;
+
+            async function kk(result)
+            {
+                console.log("yeha aw" + result)
+            }
+            async function jh()
+            {
+              // console.log(req.query.aadhar)
+               result = await Customer.find({ aadhar : req.query.aadhar}, function(err,vendor){
+                      if (err)
+                        throw err;
+                })
+              let hyr = await kk(result)
+            }
+            async function ko()
+            {
+
+                let p = await jh();
+                ob = { "name" : result[0].name , "aadhar" : result[0].aadhar , "contact" : result[0].contact , "district" : result[0].district , "state" : result[0].state}
+                console.log("fdf" + result)
+            }
+            async function main()
+            {
+                
+                await ko();
+                console.log(result[0].state)
+                res.send(ob)
+            }
+            main();
+  }
+})
+
+
+app.post('/welcome' , (req,res) => {
+
+  console.log(req.body);
+
 })
 
 
@@ -743,7 +1028,7 @@ app.post('/signup', (req,res) => {
 
     			console.log(req.body.role)
 
-    			if (req.body.role === 'customer'){
+    			if (req.body.role === 'customer' || req.body.role  == 4){
 
     				// console.log(req.body)
     				// console.log(hash)
@@ -777,7 +1062,8 @@ app.post('/signup', (req,res) => {
                       annualincome : req.body.annualincome,
                       password : hash,
                       pincode: req.body.pincode,
-                      rationid : x
+                      // rationid : x,
+                      nearestrationshop : x
 
                })
 
@@ -798,7 +1084,7 @@ app.post('/signup', (req,res) => {
               // res.redirect('/sign_customer')
 	    			}
 
-	    		else if (req.body.role === 'farmer')
+	    		else if (req.body.role === 'farmer' || req.body.role == 1)
 	    		{
             var x
             async function k(results){
@@ -864,22 +1150,14 @@ app.post('/signup', (req,res) => {
 
 	    		}	
 
-	    		else if (req.body.role === 'godown')
+	    		else if (req.body.role === 'godown'  || req.body.role == 2)
 	    		{
-            // var x = []
 
-            // async function k(results){
+            let arr1 = {"wheat" : 1000, "paddy" : 1000 , "dal" : 1000, "bajra" : 1000, "maize" : 1000, "gram" : 1000, "moong": 1000, "urad": 1000, "soyabean" : 1000}
+            let arr2 = {"wheat" : 100, "paddy" : 100 , "dal" : 100, "bajra" : 100, "maize" : 100, "gram" : 100, "moong": 100, "urad": 100, "soyabean" : 100}
 
+            async function main(){
 
-
-            // }
-
-            // async function g(){
-
-            //   let results = await Ration.find({state : req.body.state , district : req.body.district})
-            //   let hyr = await k(results)
-
-            // }
 	    			var newGodown = new Godown({
 							
 							name : req.body.name,
@@ -892,7 +1170,11 @@ app.post('/signup', (req,res) => {
 							location : req.body.location,
 							capacity : req.body.capacity,
               listofvendors : [],
-              listofcustomers : []
+              listofcustomers : [],
+              stockofcrops : arr1,
+              cropstogiveeachtime : arr2,
+              farmerrequests : []
+
 							})
 
 						newGodown.save(function(error){
@@ -905,7 +1187,8 @@ app.post('/signup', (req,res) => {
 	    			res.send(req.body)
 	    		}
 
-	    		else if (req.body.role === 'ration')
+}
+	    		else if (req.body.role === 'ration' || req.body.role == 3)
 	    		{
 
           var x = [];
@@ -914,7 +1197,7 @@ app.post('/signup', (req,res) => {
           async function k(result){
             console.log(result)
               if (result)
-                  y = result._id.toString()
+                  y = result.name
 
             // async function r(result){
 
@@ -923,6 +1206,8 @@ app.post('/signup', (req,res) => {
             // }
             return y;
             }
+            let removalarray = {"wheat" : 10, "paddy" : 8 , "dal" : 5, "bajra" : 6, "maize" : 7, "gram" : 5, "moong": 9, "urad": 8, "soyabean" : 10}
+            let initialstockarray = {"wheat" : 100, "paddy" : 100 , "dal" : 100, "bajra" : 100, "maize" : 100, "gram" : 100, "moong": 100, "urad": 100, "soyabean" : 100}
             async function g(){
 
               // let results = await Customer.find({state : req.body.state , district : req.body.district})
@@ -947,7 +1232,9 @@ app.post('/signup', (req,res) => {
                 location : req.body.location,
                 houses : req.body.houses,
                 assignedgodownid : y,
-                listofcustomers : x
+                listofcustomers : x,
+                stockofcrops : initialstockarray,
+                cropstogiveeachtime : removalarray
               })
 
             newRation.save(function(error){
@@ -976,44 +1263,293 @@ app.post('/signup', (req,res) => {
 
 /// admin
 
+app.get('/getmsp' , (req,res) => {
+
+    let x = []
+    let rate;
+    async function k(result){
+      
+        for (var i = 0 ; i < result.crops.length ;i++)
+        {
+          console.log(result.crops[i])
+          if (result.crops[i].name == req.query.crop)
+          {
+
+            rate = result.crops[i].rate;
+            break;
+          }
+        }
+      
+    }
+    async function g(){
+
+      let result = await State.findOne({name: req.query.name})
+      
+      let jfj = await k(result)
+    
+      return jfj
+    
+    }
+    async function ghy()
+    {
+      let sfd = await g()
+    }
+    ghy().then(function(result)
+    {
+      res.send(rate.toString());
+    })
+
+})
+
 app.get('/admin', (req,res) => {
 
 	res.sendFile(path.join(__dirname + '/Login_v9/index.html'))
 
+})
+
+app.get('/loadgrainlistforvendor' , (req,res) => {
+
+    /// vendor 
+
+    let resultu;
+
+    async function k(result)
+    {
+      resultu = result[0].stockofcrops
+      console.log(result)
+    }
+    async function f()
+    {
+
+        let result = await Ration.find({aadhar : req.query.aadhar})
+
+        let fdf = await k(result)
+
+        return fdf
+
+    }
+
+    async function main()
+    {
+      let dfdf = await f()
+      
+    }
+
+    main().then(function(result){
+      res.send(resultu)
+    });
 
 })
 
-// app.listen(process.env.PORT || 3000, (err) => {
-// 	if (err)
-// 		throw err;
-// 	else {
-// 		console.log("your server running on port 3000 on 127.0.0.1 known as the localhost")}
-// })
+app.get('/loadcustomerlistforvendor' , (req,res) => {
+
+        let resultu;
+
+    async function k(result)
+    {
+      resultu = result[0].listofcustomers
+      console.log(result)
+    }
+    async function f()
+    {
+
+        let result = await Ration.find({aadhar : req.query.aadhar})
+
+        let fdf = await k(result)
+
+        return fdf
+
+    }
+
+    async function main()
+    {
+      let dfdf = await f()
+      
+    }
+
+    main().then(function(result){
+      res.send(resultu)
+ });
 
 
-					// mongoose.connection.collections.farmers.drop(function(){
-
-					// 	console.log("dropped collection")
-
-					// })
+})
 
 
+app.get('/loadfarmerlistforgodown' , (req,res) => {
+
+          let resultu;
+
+    async function k(result)
+    {
+      resultu = result[0].listoffarmers
+      console.log(result)
+    }
+    async function f()
+    {
+
+        let result = await Godown.find({aadhar : req.query.aadhar})
+
+        let fdf = await k(result)
+
+        return fdf
+
+    }
+
+    async function main()
+    {
+      let dfdf = await f()
+      
+    }
+
+    main().then(function(result){
+      res.send(resultu)
+ });
+
+})
 
 
-//   passport.use(new LocalStrategy(function(username, password, done) {
-//   Model1.findOne({ username : username }, function(err, user) {
-//     // first method succeeded?
-//     if (!err && user && passwordMatches(...)) {
-//       return done(null, user);
+app.get('/loadvendorlistforgodown' ,(req,res) => {
+
+    let resultu;
+
+    async function k(result)
+    {
+      resultu = result[0].listofvendors
+      console.log(result)
+    }
+    async function f()
+    {
+
+        let result = await Godown.find({aadhar : req.query.aadhar})
+
+        let fdf = await k(result)
+
+        return fdf
+
+    }
+
+    async function main()
+    {
+      let dfdf = await f()
+      
+    }
+
+    main().then(function(result){
+      res.send(resultu)
+ });
+
+})
+
+app.get('/nearestvendor' ,(req,res) => {
+
+
+    let resultu;
+
+    async function k(result)
+    {
+      resultu = result[0].nearestrationshop
+      console.log(result)
+    }
+    async function f()
+    {
+
+        let result = await Customer.find({aadhar : req.query.aadhar})
+
+        let fdf = await k(result)
+
+        return fdf
+
+    }
+
+    async function main()
+    {
+      let dfdf = await f()
+      
+    }
+
+    main().then(function(result){
+      res.send(resultu)
+   });
+
+
+})
+
+app.get('/nearestgodown' , (req,res) => {
+
+    let resultu;
+
+    async function k(result)
+    {
+      resultu = result[0].nearestgodownid
+      console.log(result)
+    }
+    async function f()
+    {
+
+        let result = await Farmer.find({aadhar : req.query.aadhar})
+
+        let fdf = await k(result)
+
+        return fdf
+
+    }
+
+    async function main()
+    {
+      let dfdf = await f()
+      
+    }
+
+    main().then(function(result){
+      res.send(resultu)
+ });
+
+
+})
+
+
+app.get('/loadrationforgodown' , (req,res) => {
+
+    
+
+
+})
+////// bht kaam h 
+
+// app.post('/requestfromfarmertogodown' ,(req,res) => {
+
+//       // farmer ki trf se 
+
+//     let resultu;
+//     async function tr(result)
+//     {
+//         let xx = 
 //     }
-//     // no, try second method:
-//     Model2.findOne({ name : username }, function(err, user) {
-//       // second method succeeded?
-//       if (! err && user && passwordMatches(...)) {
-//         return done(null, user);
-//       }
-//       // fail! 
-//       done(new Error('invalid user or password'));
-//     });
-//   }); 
-// }));
+//     async function k(result)
+//     {
+//       resultu = result[0].nearestgodownid
+//       let afd = await tr(resultu)
+//       console.log(resultu)
+//     }
+//     async function f()
+//     {
+
+//         let result = await Farmer.find({aadhar : req.query.aadhar})
+
+//         let fdf = await k(result)
+
+//         return fdf
+
+//     }
+
+//     async function main()
+//     {
+//       let dfdf = await f()
+      
+//     }
+
+//     main().then(function(result){
+//       res.send(resultu)
+//  });
+
+// })

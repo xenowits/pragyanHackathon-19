@@ -13,7 +13,7 @@ const CustomerSchema = new Schema({
 	annualincome : Number,
 	password : String,
 	pincode: Number,
-	vendor : String
+	rationid : String
 
 })
 

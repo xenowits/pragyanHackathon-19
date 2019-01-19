@@ -547,7 +547,7 @@ app.post('/signup', (req,res) => {
                       annualincome : req.body.annualincome,
                       password : hash,
                       pincode: req.body.pincode,
-                      vendor : x
+                      rationid : x
 
                })
 
@@ -570,20 +570,28 @@ app.post('/signup', (req,res) => {
 
 	    		else if (req.body.role === 'farmer')
 	    		{
-            var x = []
+            var x
             async function k(results){
-
-                    for (var i = 0 ; i < results.length ; i++)
+                console.log('kya hua' + results[0])
+                    for (var i = 0 ; i < 1 ; i++)
                     {
 
-                        x.push({"id" : results[i]._id.toString()})
-                        console.log(results[i]._id.toString())
+                        // x.push({"id" : results[i]._id.toString()})
+                        if (results[i]){
+                            x = results[i]._id.toString();
+                            console.log(results[i]._id.toString())
+                          }
+                          else
+                          {
+                            x = ""
+                          }
+                        
                     }
             }
                async function g(){ 
 
                  let results = await Godown.find({state : req.body.state , district : req.body.district})
-                 
+                 console.log('length ' + results.length)
                   let hyr = await k(results);
                   // console.log(x);
                   return x;
@@ -607,7 +615,7 @@ app.post('/signup', (req,res) => {
                   password: hash,
                   pincode: req.body.pincode,
                   typeofcrop : req.body.typeofcrop,
-                  nearestgodown : x
+                  nearestgodownid : x
               })
 
                 newFarmer.save(function(error){
@@ -628,6 +636,20 @@ app.post('/signup', (req,res) => {
 
 	    		else if (req.body.role === 'godown')
 	    		{
+            // var x = []
+
+            // async function k(results){
+
+
+
+            // }
+
+            // async function g(){
+
+            //   let results = await Ration.find({state : req.body.state , district : req.body.district})
+            //   let hyr = await k(results)
+
+            // }
 	    			var newGodown = new Godown({
 							
 							name : req.body.name,
@@ -638,8 +660,9 @@ app.post('/signup', (req,res) => {
 							password : hash,
 							pincode: req.body.pincode,
 							location : req.body.location,
-							capacity : req.body.capacity
-
+							capacity : req.body.capacity,
+              listofvendors : [],
+              listofcustomers : []
 							})
 
 						newGodown.save(function(error){
@@ -654,28 +677,61 @@ app.post('/signup', (req,res) => {
 
 	    		else if (req.body.role === 'ration')
 	    		{
-	    			var newRation = new Ration({
-														
-								name : req.body.name,
-								aadhar: req.body.aadhar,
-								contact: req.body.contact,
-								district : req.body.district,
-								state : req.body.state,
-								password : hash,
-								pincode: req.body.pincode,
-								location : req.body.location,
-								houses : req.body.houses
 
-							})
+          var x = [];
+          var y;
 
-						newRation.save(function(error){
+          async function k(result){
 
-	    					if (error)
-	    						throw error
-	    					else
-	    						console.log("ration saved successfully")
-						})
-	    			res.send(req.body)
+             y = result._id.toString()
+
+            // async function r(result){
+
+            //       y = result.
+
+            // }
+            return y;
+            }
+            async function g(){
+
+              // let results = await Customer.find({state : req.body.state , district : req.body.district})
+              let result = await Godown.findOne({state : req.body.state , district : req.body.district})
+              let hyr = await k(result)
+              // let pro = await r(result)
+              return hyr;
+            }
+            async function main(){
+
+                await g()
+
+                var newRation = new Ration({
+                            
+                name : req.body.name,
+                aadhar: req.body.aadhar,
+                contact: req.body.contact,
+                district : req.body.district,
+                state : req.body.state,
+                password : hash,
+                pincode: req.body.pincode,
+                location : req.body.location,
+                houses : req.body.houses,
+                assignedgodownid : y,
+                listofcustomers : x
+              })
+
+            newRation.save(function(error){
+
+                if (error)
+                  throw error
+                else
+                  console.log("ration saved successfully")
+            })
+
+            res.send(req.body)
+
+            }
+	         main();
+	    			
 	    		}
 
 

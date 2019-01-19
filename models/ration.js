@@ -1,6 +1,13 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
+const CustomerSchema = new Schema({
+
+	id : String
+
+
+})
+
 const RationSchema = new Schema({
 
 	name : String,
@@ -11,8 +18,9 @@ const RationSchema = new Schema({
 	password : String,
 	pincode: Number,
 	location : String,
-	houses : Number
-
+	houses : Number,
+	assignedgodownid : String,
+	listofcustomers : [CustomerSchema]
 })
 
 

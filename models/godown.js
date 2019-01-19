@@ -1,7 +1,11 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
+const VendorSchema = new Schema({
 
+	id : String
+
+})
 const GodownSchema = new Schema({
 
 	name : String,
@@ -12,8 +16,9 @@ const GodownSchema = new Schema({
 	password : String,
 	pincode: Number,
 	location : String,
-	capacity : Number
-
+	capacity : Number,
+	listofvendors : [VendorSchema],
+	listoffarmers : [VendorSchema]
 })
 
 

@@ -23,7 +23,7 @@ const FarmerSchema = new Schema({
 	password: String,
 	pincode: Number,
 	typeofcrop : String,
-	nearestgodown : [GodownSchema]
+	nearestgodownid : String
 })
 
 // const AuthorSchema = new Schema({

@@ -95,6 +95,11 @@ const bodyParser = require('body-parser')
 
 var passport = require('passport'), LocalStrategy = require('passport-local').Strategy;
 
+// var myLocalStrategy1 = require('passport-local').Strategy;
+// var myLocalStrategy2 = require('passport-local').Strategy;
+// var myLocalStrategy3 = require('passport-local').Strategy;
+// var myLocalStrategy4 = require('passport-local').Strategy;
+
 mongoose.promise = global.Promise;
 
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -353,13 +358,24 @@ app.get('/sign_vendor' , (req,res) => {
 
 //// passport authentication using local strategy starts
 
-passport.use(new LocalStrategy(
+
+// passport.use('local.one', myLocalStrategy1);
+// passport.use('local.two', myLocalStrategy2);
+// passport.use('local.three', myLocalStrategy3);
+// passport.use('local.four', myLocalStrategy4);
+
+
+passport.use('local.one', new LocalStrategy(
 
   function(username, password, done) {
-    Farmer.findOne({ name: username }, function(err, user) {
+
+    console.log("local strategy 1 m ho tm sb")
+
+      Customer.findOne({ name: username }, function(err, user) {
+
       if (err) { 
-      	console.log("err wala h")
-      	return done(err); }
+        console.log("err wala h")
+        return done(err); }
       if (!user) {
         return done(null, false, { message: 'Incorrect username.' });
       }
@@ -371,69 +387,283 @@ passport.use(new LocalStrategy(
 
       bcrypt.compare(password, user.password, function(err, res) {
 
-      		console.log(password === user.password)
+          console.log(password === user.password)
 
-    		if (err)
-    		{
-    			throw err
-    			console.log('err wala h')
-    		}
+        if (err)
+        {
+          throw err
+          console.log('err wala h')
+        }
 
-    		else{
+        else{
 
-    			console.log('else wala block h ' + res)
-    			if (res){
-    				return done(null,user)
-    				console.log('res wala true h')
-    			}
-    			else{
-    				console.log('res wala false h')
-    				return done(null, false, { message: 'Incorrect password.' });
-    				
-    			}
+          console.log('else wala block h ' + res)
+          if (res){
+            return done(null,user)
+            console.log('res wala true h')
+          }
+          else{
+            console.log('res wala false h')
+            return done(null, false, { message: 'Incorrect password.' });
+            
+          }
 
-    		}
-		});
+        }
+    });
     });
   }
 ));
 
+function isCustomer(user)
+{
+    Customer.find({name : user.name }).then(function(results){
+      console.log("dones")
+      if (results.length > 0)
+        return true;
+      else
+        return false
+    })
+}
+
+
 
 passport.serializeUser(function(user, done) {
-  done(null, user.id);
+    
+    done(null, user.id)
+
 });
 
 passport.deserializeUser(function(id, done) {
-  Farmer.findById(id, function(err, user) {
-    done(err, user);
-  });
+
+    if (isCustomer(user))
+    {
+        // done(null,user.id)
+        Customer.findById(id, function(err,user){
+          done(err,user)
+        })
+    }
+    if (isFarmer(user))
+      {
+          Farmer.findById(id, function(err,user){
+          done(err,user)
+        })
+      }
+      if (isGodown(user))
+      {
+          Godown.findById(id, function(err,user){
+          done(err,user)
+        })
+      }
+      else if (isRation(user))
+      {
+          Ration.findById(id, function(err,user){
+          done(err,user)
+        })
+      }
+  // Farmer.findById(id, function(err, user) {
+  //   done(err, user);
+  // });
 });
 
 /// paasport js block ends here 
 
+// app.post('/signin/customer',
 
-app.post('/signin',
+//   passport.authenticate('local.one', { 
+//   								failureRedirect: '/',
+//                                 failureFlash: true }), function(req,res){
 
-  passport.authenticate('local', { 
-  								failureRedirect: '/',
-                                failureFlash: true }), function(req,res){
+//     res.send(req.body);
 
- 	// console.log(req.body)
- 	// res.send(req.body)
+// });
 
+app.post('/signin/customer', function(req,res){
 
+            var x = []
 
+            async function kk(results){
+                  for(var i = 0 ; i < results.length ; i++)
+                  {
+                    x.push(results[i].password)
+                  }
+            }
+            async function jh()
+            {
+               let results = await Customer.find({name : req.body.name}, function(err,vendor){
+                      if (err)
+                        throw err;
+                })
+               let hyr = await kk(results)
+               return x;
+            }
+            let ggg = false; 
+            async function df(){
+              for (var i = 0 ; i < x.length ;i++)
+                {
+                  const match = await bcrypt.compare(req.body.password,x[i])
+                  if (match)
+                  {
+                    res.send("OK")
+                    ggg = true
+                    break;
+                  }
+                }
+            }
 
+            async function main()
+            {
+                
+                let p = await jh();
+                console.log(x.length)
+                await df()
+                if (!ggg)
+                  res.redirect('/');
+            }
+            main();
 
 });
 
+app.post('/signin/farmer', function(req,res){
 
-// app.get('/' , (req,res) => {
+                var x = []
 
-// 	// res.send("fdfd")
-// 	res.sendFile(path.join(__dirname + '/frontend/sign_farmer.html'))
+            async function kk(results){
+                  for(var i = 0 ; i < results.length ; i++)
+                  {
+                    x.push(results[i].password)
+                  }
+            }
+            async function jh()
+            {
+               let results = await Farmer.find({name : req.body.name}, function(err,vendor){
+                      if (err)
+                        throw err;
+                })
+               let hyr = await kk(results)
+               return x;
+            }
+            let ggg = false; 
+            async function df(){
+              for (var i = 0 ; i < x.length ;i++)
+                {
+                  const match = await bcrypt.compare(req.body.password,x[i])
+                  if (match)
+                  {
+                    res.send("OK")
+                    ggg = true
+                    break;
+                  }
+                }
+            }
 
-// })
+            async function main()
+            {
+                
+                let p = await jh();
+                console.log(x.length)
+                await df()
+                if (!ggg)
+                  res.redirect('/');
+            }
+            main();
+
+
+
+
+})
+
+
+app.post('/signin/godown', function(req,res){
+
+              var x = []
+
+            async function kk(results){
+                  for(var i = 0 ; i < results.length ; i++)
+                  {
+                    x.push(results[i].password)
+                  }
+            }
+            async function jh()
+            {
+               let results = await Godown.find({name : req.body.name}, function(err,vendor){
+                      if (err)
+                        throw err;
+                })
+               let hyr = await kk(results)
+               return x;
+            }
+            let ggg = false; 
+            async function df(){
+              for (var i = 0 ; i < x.length ;i++)
+                {
+                  const match = await bcrypt.compare(req.body.password,x[i])
+                  if (match)
+                  {
+                    res.send("OK")
+                    ggg = true
+                    break;
+                  }
+                }
+            }
+
+            async function main()
+            {
+                
+                let p = await jh();
+                console.log(x.length)
+                await df()
+                if (!ggg)
+                  res.redirect('/');
+            }
+            main();
+
+});
+
+app.post('/signin/ration', function(req,res){
+
+              var x = []
+
+            async function kk(results){
+                  for(var i = 0 ; i < results.length ; i++)
+                  {
+                    x.push(results[i].password)
+                  }
+            }
+            async function jh()
+            {
+               let results = await Ration.find({name : req.body.name}, function(err,vendor){
+                      if (err)
+                        throw err;
+                })
+               let hyr = await kk(results)
+               return x;
+            }
+            let ggg = false; 
+            async function df(){
+              for (var i = 0 ; i < x.length ;i++)
+                {
+                  const match = await bcrypt.compare(req.body.password,x[i])
+                  if (match)
+                  {
+                    res.send("OK")
+                    ggg = true
+                    break;
+                  }
+                }
+            }
+
+            async function main()
+            {
+                
+                let p = await jh();
+                console.log(x.length)
+                await df()
+                if (!ggg)
+                  res.redirect('/');
+            }
+            main();
+
+});
 
 
 app.get('/welcome' , (req,res) => {
@@ -517,7 +747,7 @@ app.post('/signup', (req,res) => {
 
     				// console.log(req.body)
     				// console.log(hash)
-          var x ;
+            var x ;
             var newCustomer;
             async function kk(result){
               x = result._id.toString();
@@ -765,3 +995,24 @@ app.get('/admin', (req,res) => {
 					// 	console.log("dropped collection")
 
 					// })
+
+
+
+
+//   passport.use(new LocalStrategy(function(username, password, done) {
+//   Model1.findOne({ username : username }, function(err, user) {
+//     // first method succeeded?
+//     if (!err && user && passwordMatches(...)) {
+//       return done(null, user);
+//     }
+//     // no, try second method:
+//     Model2.findOne({ name : username }, function(err, user) {
+//       // second method succeeded?
+//       if (! err && user && passwordMatches(...)) {
+//         return done(null, user);
+//       }
+//       // fail! 
+//       done(new Error('invalid user or password'));
+//     });
+//   }); 
+// }));

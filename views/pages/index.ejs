@@ -16,22 +16,31 @@
 <thead>
 	<tr>
 		<th>State Name</th>
-		<th>Rice</th>
 		<th>Wheat</th>
-		<th>Sugar</th>
 		<th>Paddy</th>
-		<th>Tea</th>
+		<th>Dal</th>
+		<th>Bajra</th>
+		<th>Maize</th>
+		<th>Gram</th>
+		<th>Moong</th>
+		<th>Urad</th>
+		<th>Soyabean</th>
 	</tr>
 </thead>
 <tbody>
-	<% crops.forEach(function(crop) { %>
+	<% states.forEach(function(state) { %>
 		<tr>
-			<td><%= crop.name %></td>
-			<td><%= crop.rice %></td>
+			<td><%= state.name %></td>
+			<!-- <td><%= crop.rice %></td>
 			<td><%= crop.wheat %></td>
 			<td><%= crop.sugar %></td>
 			<td><%= crop.paddy %></td>
 			<td><%= crop.tea %></td>
+			 -->
+			 <% state.forEach(function(crops){ %>
+			 <td><%= crops.rate %></td>
+
+			})
 		</tr>
 	<% }); %>
 </tbody>

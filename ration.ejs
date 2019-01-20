@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ../partials/head %>
+</head>
+<body>
+
+<header>
+    <% include ../partials/header %>
+</header>
+<br><br><br><br><br><br>
+
+<div class="table-responsive-md">
+<table id="msp" class="table">
+<caption>LIST OF CUSTOMERS FOR THIS VENDOR</caption>
+<thead>
+	<tr>
+		<th>Name of Customer</th>
+		<th>Aadhaar Number</th>
+		<th>District</th>
+	</tr>
+</thead>
+<tbody>
+	<% customers.forEach(function(customer) { %>
+		<tr>
+			<td><%= customer.customer %></td>
+			<td><%= customer.aadhaar %></td>
+			<td><%= customer.district %></td>
+		</tr>
+	<% }); %>
+</tbody>
+</table>
+</div>
+<br><br>
+
+<div class="table-responsive-md">
+<table id="msp" class="table">
+<caption>AVAILABILITY OF GRAINS IN THE SHOP</caption>
+<thead>
+	<tr>
+		<th>Available Product</th>
+		<th>Quantity</th>
+	</tr>
+</thead>
+<tbody>
+	<% crops.forEach(function(crop) { %>
+		<tr>
+			<td><%= crop.crop %></td>
+			<td><%= crop.quantity %></td>
+		</tr>
+	<% }); %>
+</tbody>
+</table>
+</div>
+
+
+
+<footer>
+    <% include ../partials/footer %>
+</footer>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

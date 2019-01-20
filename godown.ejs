@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ../partials/head %>
+</head>
+<body>
+
+<header>
+    <% include ../partials/header %>
+</header>
+<br><br><br><br><br><br>
+
+<div class="table-responsive-md">
+<table id="msp" class="table">
+<caption>AVAILABILITY OF CROPS IN GODOWN</caption>
+<thead>
+	<tr>
+		<th>Crop</th>
+		<th>Quantity(in tonnes)</th>
+	</tr>
+</thead>
+<tbody>
+	<% crops.forEach(function(crop) { %>
+		<tr>
+			<td><%= crop.crop %></td>
+			<td><%= crop.quantity %></td>
+		</tr>
+	<% }); %>
+</tbody>
+</table>
+</div>
+
+
+
+<footer>
+    <% include ../partials/footer %>
+</footer>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
